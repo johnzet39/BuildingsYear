@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Возраст зданий Калининграда";
+}
+    <div class="wrapper">
+            <div id="map_l" class="map"> </div>
+
+
+            @*<button class="btn-edit btn btn-primary btn-sm" data-toggle="edityear">Внести правку</button>*@
+            <span class="logo noselect">
+                Калининград
+                Koenigsberg
+            </span>
+
+            <div id="info-panel" class="info-panel info-hidden">
+                <div class="info-container">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Предполагаемый год постройки</th>
+                            </tr>
+                            <tr>
+                                <td><span id="info-year">2019</span></td>
+                            </tr>
+                            <tr>
+                                <th>Информация о местоположении</th>
+                            </tr>
+                            <tr>
+                                <td><span id="info-address">фывфывфв</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="legends " style="display: block;">
+                <div class="legend">
+                    <div class="my-legend">
+                        <div class="legend-title">Калининград / период постройки зданий
+                            <div id="btnhide" class="btn-hide-subtitle show"></div>
+                        </div>
+                        
+                        <div id="subtitle" class="legend-subtitle">
+                            Информация основана на контекстном анализе открытых данных и за достоверность
+                            представленной информации разработчик ответственности не несет.
+                            Представленная информация несет исключительно развлекательный характер.
+                        </div>
+                        <div class="legend-scale">
+                            <ul class="legend-labels">
+                                <li><span style="background:#0074bc;"></span>-1945</li>
+                                <li><span style="background:#7900dc;"></span>1950</li>
+                                <li><span style="background:#ca1fa0;"></span>1960</li>
+                                <li><span style="background:#d84aa2;"></span>1970</li>
+                                <li><span style="background:#f46ec3;"></span>1980</li>
+                                <li><span style="background:#ff93d8;"></span>1990</li>
+                                <li><span style="background:#fabbe3;"></span>2000</li>
+                                <li><span style="background:#ffe4c9;"></span>2010</li>
+                                <li><span style="background:#fbf2e9;"></span>2020</li>
+                            </ul>
+                        </div>
+                        <div class="legend-source">
+                            <a class="copyright ml-2" href="https://leafletjs.com" title="A JS library for interactive maps">© Leaflet</a>
+                            <a class="copyright" href="https://github.com/johnzet39">© 2020 Zlatanov Evgeniy</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>

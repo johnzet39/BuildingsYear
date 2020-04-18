@@ -1,0 +1,35 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/js/wicket.min.js",
+    "inputFiles": [
+      "wwwroot/js/wicket.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/wicket-leaflet.min.js",
+    "inputFiles": [
+      "wwwroot/js/wicket-leaflet.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/leaflet/leaflet.min.js",
+    "inputFiles": [
+      "wwwroot/leaflet/leaflet.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
