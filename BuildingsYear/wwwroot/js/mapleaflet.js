@@ -6,7 +6,7 @@ L.control.zoom({position: 'bottomleft'}).addTo(map);
 L.DomUtil.addClass(map._container, 'crosshair-cursor-enabled');
 //var osm = new L.TileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
 
-var tiles = new L.TileLayer('http://192.168.1.105:50200/api/map/{z}/{x}/{y}.png').addTo(map);
+var tiles = new L.TileLayer(window.origin + '/api/map/{z}/{x}/{y}.png').addTo(map);
 //var tiles = new L.TileLayer('http://localhost:50201/api/map/{z}/{x}/{y}.png').addTo(map);
 
 var selectedStyle = {
