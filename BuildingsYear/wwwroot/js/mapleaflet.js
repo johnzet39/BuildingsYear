@@ -1,7 +1,7 @@
 ﻿var project1 = '+proj=tmerc +lat_0=0 +lon_0=21.45 +k=1 +x_0=1250122.7 +y_0=-5711030.0 +ellps=krass +units=m +no_defs';
 
 //var map = L.map('map_l', { maxZoom: 18, minZoom: 11}).setView([54.7, 20.45], 12);
-var map = L.map('map_l', { attributionControl: false, maxZoom: 18, minZoom: 12, zoomControl: false }).setView([54.71, 20.51], 13);
+var map = L.map('map_l', { attributionControl: false, maxZoom: 17, minZoom: 12, zoomControl: false }).setView([54.71, 20.51], 13);
 L.control.zoom({position: 'bottomleft'}).addTo(map);
 L.DomUtil.addClass(map._container, 'crosshair-cursor-enabled');
 //var osm = new L.TileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
@@ -90,16 +90,26 @@ $('button[data-toggle="edityear"]').click(function (ev) {
     toggleEditMode();
 });
 
-$('#btnhide').click(function (event) {
-    $('#subtitle').toggle('show');
 
-    if ($(this).hasClass('show')) {
-        $(this).removeClass('show');
+//HIDE SUBTITLE//////////
+function hideSubtitle() {
+    $('.legend .legend-subtitle').toggleClass('hidden');
+    var elem = $('.btn-hide-subtitle .icon-hide');
+
+    if (elem.hasClass('show')) {
+        elem.removeClass('show');
     }
     else {
-        $(this).addClass('show');
+        elem.addClass('show');
     }
+}
+setTimeout(function () { if (!$('.legend .legend-subtitle').hasClass('hidden')) hideSubtitle(); }, 2000);
+
+$('#btnhide').click(function (event) {
+    hideSubtitle();
 });
+//////////////////////////
+
 
 //UTFGrid
 
