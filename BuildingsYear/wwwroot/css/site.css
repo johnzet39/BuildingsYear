@@ -64,17 +64,6 @@ main[role=main]{
     height:100%;
 }
 
-.btn-edit {
-    position: absolute;
-    left: 30px;
-    bottom: 20px;
-    z-index: 9999;
-}
-
-.btn-edit-on {
-    background-color: red;
-}
-
 .wrapper{
     height: 100%;
     width: 100%;
@@ -138,49 +127,127 @@ main[role=main]{
                                 supported by Chrome, Opera and Firefox */
 }
 
-/*
+/*********************
 info-panel
+*********************/
+
+/*
+    scrollbar
 */
 
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
 
-    .info-panel {
-        position: absolute;
-        right: 30px;
-        top: 20px;
-        z-index: 9999;
-        opacity: 0.8;
-        padding: 10px;
-        background: transparent;
-        visibility: visible;
-        transition: visibility 0s, opacity 0.3s linear;
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(33, 33, 33);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 
 
-    .info-hidden {
+.info-panel {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    z-index: 9999;
+    opacity: 1;
+    padding: 10px;
+    background: transparent;
+    visibility: visible;
+    transition: visibility 0s, opacity 0.3s linear;
+    color: white;
+}
+    .info-panel.info-hidden {
         visibility: hidden;
         opacity: 0;
     }
 
     .info-panel .info-container {
         max-width: 334px;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.8);
         border: 1px solid rgba(100, 100, 100, 0.2);
-        border-radius: 10px;
+        border-radius: 5px 5px 5px 0px;
         position: relative;
         padding: 10px;
+        max-height: calc(100vh - 300px);
+        overflow-y: auto;
+        overflow-x: hidden;
     }
-
+        .info-panel .info-container .btn-edit {
+            position:absolute;
+            right: 30px;
+            top: 0px;
+            padding: .05rem .5rem;
+            font-size: .675rem;
+            background-image: url(../img/edit_button_w.png);
+            background-size: 18px;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 25px;
+            height: 31px;
+        }
+            .info-panel .info-container .btn-edit:hover{
+                background-color: #3e3e3e;
+            }
+        .info-panel .info-container #btn-close-info {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            color: rgba(255, 255, 255, 0.80);
+            width: 25px;
+            height: 31px;
+        }
+            .info-panel .info-container #btn-close-info:hover {
+                color: rgba(255, 255, 255, 1);
+            }
         .info-panel .info-container table {
             width: 100%;
-            font-size: 70%;
             font-family: sans-serif;
-            color: white;
             text-align: left;
+            color: white;
+            font-size: 70%;
         }
 
+    .info-panel .info-container .building-description{
+        width: 100%;
+        border: 1px solid #454545;
+        padding: 5px;
+        margin-top: 5px;
+    }
+
+        .info-panel .info-container .building-description.hidden{
+            display: none;
+        }
+        .info-panel .info-container .building-description #info-klgd-descr {
+            resize: none;
+            width: 100%;
+            display: block;
+            white-space: pre-wrap;
+            text-align: justify;
+            /*overflow: scroll;
+            overflow-x: hidden;*/
+        }
+        .info-panel .info-container .building-description img {
+            max-height: 250px;
+            max-width: 100%;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
 
     .info-panel th {
         text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.81);
     }
 
         .info-panel th::before {
@@ -189,26 +256,29 @@ info-panel
 
     .info-panel table td {
         padding: 2px;
-        white-space: pre-wrap;
-        color: #B1F1FD;
+        /*white-space: pre-wrap;*/
+        color: #b1f1fdd9;
         text-transform: none;
     }
 
 @media only screen and (max-width: 768px) {
     .info-panel {
 
-        right: 50%;
+        /*right: 50%;*/
+        /*transform: translate(50%);*/
         top: auto;
         bottom: 10px;
-        transform: translate(50%);
+        right: 0px;
     }
+        .info-panel .info-container {
+             max-width: none;
+        }
 }
 
     /**********************
     legend
 **********************/
-
-    .btn-hide-subtitle {
+            .btn-hide-subtitle {
         position: absolute;
         top: 2px;
         right: 0px;
@@ -312,7 +382,7 @@ info-panel
             -webkit-mix-blend-mode: hard-light;
             display: block;
             float: left;
-            height: 15px;
+            height: 10px;
             width: 33px;
             margin-bottom: 3px;
         }
@@ -405,4 +475,42 @@ info-panel
             }
     }
 
-    
+
+
+
+
+/** Bootstrap Dark Modal Styles **/
+.modal-open .modal, .btn:focus {
+    outline: none !important;
+}
+
+.modal.dark {
+    /*background-color: #2d3032;*/
+}
+    .modal.dark .modal-content {
+        background: #40464b;
+    }
+    .modal.dark .modal-body {
+        /*background: #40464b;*/
+    }
+
+    .modal.dark .modal-header {
+        background: #2d3032;
+        border-bottom: 1px solid #2a2c2e;
+    }
+
+        .modal.dark, .modal-header h1, .modal.dark .modal-header h2, .modal.dark .modal-header h3, .modal.dark .modal-header h4 {
+            color: #ccc;
+        }
+
+    .modal.dark .card-footer {
+        background: #2d3032;
+        border-top: 1px solid #2a2c2e;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .modal.dark .modal-footer {
+        border-top: 1px solid rgba(0,0,0,.125);
+    }

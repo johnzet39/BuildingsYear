@@ -71,6 +71,10 @@ namespace BuildingsYear.Models
                         {
                             year = feature.GetFieldAsString("year"),
                             address = feature.GetFieldAsString("address_in"),
+                            keyid = feature.GetFieldAsInteger("KEYID"),
+                            klgd_descr = feature.GetFieldAsString("klgd_gallery_descr"),
+                            klgd_img_url = feature.GetFieldAsString("klgd_gallery_img_url"),
+                            klgd_source = feature.GetFieldAsString("klgd_source_info"),
                             geom = featureWkt
                         };
                         return Newtonsoft.Json.JsonConvert.SerializeObject(jsonobject);

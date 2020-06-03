@@ -29,6 +29,25 @@ namespace BuildingsYear.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult EditBuilding(int keyid)
+        {
+            return PartialView("EditBuildingModal", new UserBuilding { Keyid = keyid} );
+        }
+
+        [HttpPost]
+        public IActionResult EditBuilding(UserBuilding userbuilding)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    return Ok();
+            //}
+            //else
+            //{
+            return PartialView("EditBuildingModal", userbuilding);
+            
+        }
+
         public IActionResult Privacy()
         {
             return View();

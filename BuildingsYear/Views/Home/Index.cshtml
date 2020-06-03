@@ -1,6 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Возраст зданий Калининграда";
+    ViewData["Title"] = "Возраст сооружений Калининграда";
 }
+    <div id="modal-placeholder"></div>
+
     <div class="wrapper">
             <div id="map_l" class="map"> </div>
 
@@ -13,29 +15,55 @@
 
             <div id="info-panel" class="info-panel info-hidden">
                 <div class="info-container">
-                    <table>
+                    <div>
+                        <button id="edit-button" class="btn btn-edit" data-toggle="ajax-edit-modal" data-url=@Url.Action("EditBuilding", "Home") data-target="#editBuildingModal" title="Исправить"></button>
+                        <button id="btn-close-info" class="btn btn-sm">&times;</button>
+                    </div>
+                    <table style="margin-right:55px">
                         <tbody>
                             <tr>
                                 <th>Предполагаемый год постройки</th>
                             </tr>
                             <tr>
-                                <td><span id="info-year">2019</span></td>
+                                <td><span id="info-year"></span></td>
                             </tr>
                             <tr>
                                 <th>Информация о местоположении</th>
                             </tr>
                             <tr>
-                                <td><span id="info-address">фывфывфв</span></td>
+                                <td style="white-space: pre-wrap;"><span id="info-address"></span></td>
                             </tr>
                         </tbody>
                     </table>
+                    <div id="building-description" class="building-description hidden">
+                        <table class="klgd-info">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center; color:white">
+                                        Источник описания: <span id="info-source"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <img id="info-klgd-img" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="info-klgd-descr">textarea</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
             <div class="legends " style="display: block;">
                 <div class="legend">
                     <div class="my-legend">
-                        <div class="legend-title">Калининград / период постройки зданий
+                        <div class="legend-title">Калининград - периоды строительства
                             <div id="btnhide" class="btn-hide-subtitle">
                                 <div class="icon-hide show"></div>
                             </div>
@@ -49,13 +77,13 @@
                         <div class="legend-scale">
                             <ul class="legend-labels">
                                 <li><span style="background:#d95b42;"></span>-1945</li>
-                                <li><span style="background:#e77c4e;"></span>1950</li>
-                                <li><span style="background:#f59c5a;"></span>1960</li>
-                                <li><span style="background:#efb66c;"></span>1970</li>
-                                <li><span style="background:#d2c784;"></span>1980</li>
-                                <li><span style="background:#b4d89d;"></span>1990</li>
-                                <li><span style="background:#85cca8;"></span>2000</li>
-                                <li><span style="background:#51b3ad;"></span>2010</li>
+                                <li><span style="background:#f39558;"></span>1953</li>
+                                <li><span style="background:#f3b469;"></span>1964</li>
+                                <li><span style="background:#e1be78;"></span>1982</li>
+                                <li><span style="background:#cfc987;"></span>1985</li>
+                                <li><span style="background:#bed395;"></span>1991</li>
+                                <li><span style="background:#acdda4;"></span>1998</li>
+                                <li><span style="background:#64bdab;"></span>2008</li>
                                 <li><span style="background:#1c9bb2;"></span>2020</li>
                             </ul>
                         </div>

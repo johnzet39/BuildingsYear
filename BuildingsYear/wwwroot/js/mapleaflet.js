@@ -4,7 +4,7 @@
 //var pc_browser = !L.Browser.mobile;
 //console.log(pc_browser);
 
-var map = L.map('map_l', { attributionControl: false, maxZoom: 17, minZoom: 12, zoomControl: false, dragging: true, tap: true }).setView([54.71, 20.51], 13);
+var map = L.map('map_l', { attributionControl: false, maxZoom: 17, minZoom: 10, zoomControl: false, dragging: true, tap: true }).setView([54.71, 20.51], 12);
 L.control.zoom({position: 'bottomleft'}).addTo(map);
 L.DomUtil.addClass(map._container, 'crosshair-cursor-enabled');
 //var osm = new L.TileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
@@ -19,6 +19,7 @@ var selectedStyle = {
 
 var groupSelectedPolygon = new L.featureGroup().addTo(map);
 var selectedPolygon = L.geoJSON(null, { style: selectedStyle }).addTo(groupSelectedPolygon);
+var current_keyid_building = null; //for edit
 
 setDefaultMapClickEvent();
 
@@ -30,24 +31,41 @@ function defaultMapClick(e) {
     url = 'api/map/getinfo/' + e.latlng.lng + '/' + e.latlng.lat;
     $.get(url).done(function (data) {
         if (data.error) {
-            $("#info-panel").addClass('info-hidden');
-            selectedPolygon.clearLayers();
+            closeInfoPanel();
         }
         else {
             selectedPolygon.clearLayers();
             if (data.featureInfo != null) {
-                var string_year = JSON.parse(data.featureInfo).year;
-                var string_address = JSON.parse(data.featureInfo).address;
-                if (string_year.length > 0 && string_address.length > 0) {
-                    document.getElementById("info-year").innerHTML = string_year;
-                    document.getElementById("info-address").innerHTML = string_address;
-                    $("#info-panel").removeClass('info-hidden');
+                var json_object = JSON.parse(data.featureInfo);
+                current_keyid_building = json_object.keyid;
 
-                    selectFeature(JSON.parse(data.featureInfo).geom);
+                var string_year = json_object.year.replace('1945', 'до 1945');
+                var string_address = json_object.address;
+                
+                if (string_year.length < 1) {
+                    string_year = 'Неизвестно, вы можете внести свои данные';
+                }
+                if (string_address.length < 1) {
+                    string_address = ' - ';
+                }
+                document.getElementById("info-year").innerHTML = string_year;
+                document.getElementById("info-address").innerHTML = string_address;
+                $("#info-panel").removeClass('info-hidden');
+
+                var string_klgd_img_url = json_object.klgd_img_url;
+                var string_klgd_descr = json_object.klgd_descr;
+                var string_klgd_source = json_object.klgd_source;
+                if (string_klgd_source.length > 0 && string_klgd_descr.length > 0) {
+                    document.getElementById("info-source").innerHTML = string_klgd_source;
+                    //document.getElementById("info-klgd-img").setAttribute('src', string_klgd_img_url);
+                    document.getElementById("info-klgd-img").setAttribute('src', "c3fb3b9ed7a7c9f117513a82c9b45bb4.jpg");
+                    document.getElementById("info-klgd-descr").innerHTML = string_klgd_descr;
+                    $("#building-description").removeClass('hidden');
                 }
                 else {
-                    $("#info-panel").addClass('info-hidden');
+                    $("#building-description").addClass('hidden');
                 }
+                selectFeature(JSON.parse(data.featureInfo).geom);
             }
         }
     });
@@ -60,38 +78,32 @@ function selectFeature(geometry) {
     selectedPolygon.addData(polygon);
 }
 
-function setEditBuildClickEvent() {
-    map.off('click', defaultMapClick);
-    map.on('click', editMapClick);
+function closeInfoPanel() {
+    $("#info-panel").addClass('info-hidden');
+    selectedPolygon.clearLayers();
+    current_keyid_building = null;
 }
 
-function unsetEditBuildClickEvent() {
-    map.on('click', defaultMapClick);
-    map.off('click', editMapClick);
-}
 
-function editMapClick(e) {
-    console.log(e.latlng.lng + ', ' + e.latlng.lat);
-    toggleEditMode();
-}
-
-function toggleEditMode() {
-    var btn = $('button[data-toggle="showOnMap"]');
-    if (btn.hasClass('btn-edit-on')) {
-        btn.removeClass('btn-edit-on');
-        btn.text('Внести правку');
-        unsetEditBuildClickEvent();
-    }
-    else {
-        btn.addClass('btn-edit-on');
-        btn.text('Отмена');
-        setEditBuildClickEvent();
-    }
-}
-
-$('button[data-toggle="edityear"]').click(function (ev) {
-    toggleEditMode();
+/************************
+*** START info panel
+************************/
+$('#btn-close-info').click(function (e) {
+    closeInfoPanel();
 });
+
+$('button[data-toggle="ajax-edit-modal"]').click(function (e) {
+    event.preventDefault();
+    var url = $(this).data('url');
+    $.get(url, { keyid: current_keyid_building }).done(function (data) {
+        $('#modal-placeholder').html(data);
+        $('#modal-placeholder > .modal').modal('show');
+    });
+});
+/************************
+*** END info panel
+************************/
+
 
 /************************
 *** START hide subtitle

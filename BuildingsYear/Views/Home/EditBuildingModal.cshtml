@@ -1,0 +1,123 @@
+﻿@model UserBuilding
+@{
+    Layout = null;
+}
+
+
+
+<style>
+    .field-validation-error {
+        color: #f79401!important;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    input.input-validation-error {
+        border: 2px solid #f79401!important;
+    }
+
+    input[type="checkbox"].input-validation-error {
+        border: 0 none;
+    }
+
+    .validation-summary-errors {
+        color: #f79401!important;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+<div class="modal dark fade" id="editBuildingModal" tabindex="-1" role="dialog" aria-hidden="true">
+    @*<div class="modal-dialog" role="document">*@
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Label">Сооружение @Model.Keyid</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="card-header">
+                    <h6> Пожалуйста, заполните следующие поля. Ваша информация будет внесена после модерации.</h6>
+                </div>
+                <div class="card-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <form asp-controller="Home" asp-action="EditBuilding" method="post" id="user-build-form">
+
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                        <input type="hidden" asp-for="@Model.Keyid" />
+
+                        <div class="form-group-sm mb-2">
+                            <label asp-for="@Model.YearNew"></label>
+                            <div><span asp-validation-for="@Model.YearNew" class="text-danger"></span></div>
+                            <input type="number" asp-for="@Model.YearNew" class="form-control"/>
+                        </div>
+
+                        <div class="form-group-sm mb-2">
+                            <label asp-for="@Model.ReasonYear"></label>
+                            <div><span asp-validation-for="@Model.ReasonYear" class="text-danger"></span></div>
+                            <input type="text" asp-for="@Model.ReasonYear"  class="form-control" placeholder="Можно коротко, пара слов"/>
+                        </div>
+
+                        <div class="form-group-sm mb-2">
+                            <label asp-for="@Model.Username"></label>
+                            <div><span asp-validation-for="@Model.Username" class="text-danger"></span></div>
+                            <input type="text" asp-for="@Model.Username" placeholder="Необязательно"  class="form-control"/>
+                        </div>
+
+                        <div class="form-group-sm mb-2">
+                            <label asp-for="@Model.UserMail"></label>
+                            <div><span asp-validation-for="@Model.UserMail" class="text-danger"></span></div>
+                            <input type="text" asp-for="@Model.UserMail" placeholder="Необязательно" class="form-control"/>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary" data-save="modal">Применить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#user-build-form");
+        var placeholderElement = $('#modal-placeholder');
+        placeholderElement.on('click', '[data-save="modal"]', function (event) {
+
+            event.preventDefault();
+            console.log('sumbit');
+
+            var form = $(this).parents('.modal').find('form');
+            $.ajax({
+                url: form.attr("action"),
+                method: form.attr("method"),  // post
+                data: form.serialize(),
+                success: function (partialResult) {
+                    var newBody = $('.modal-body', partialResult);
+
+                    var isValid = newBody.find('[name="IsValid"]').val() == 'True';
+                    if (isValid) {
+                        placeholderElement.find('.modal').modal('hide');
+                    }
+                    else {
+                        placeholderElement.find('.modal-body').replaceWith(newBody);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
