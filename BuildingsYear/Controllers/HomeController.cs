@@ -42,9 +42,10 @@ namespace BuildingsYear.Controllers
         [HttpPost]
         public IActionResult EditBuilding(UserBuilding userbuilding)
         {
-
+            
             if (ModelState.IsValid)
             {
+                userbuilding.IpAddressUser = HttpContext.Connection.RemoteIpAddress.ToString();
                 var usersTable = _layersList.Value.FirstOrDefault(o => o.Name == "users_data");
                 if (usersTable != null)
                 {
