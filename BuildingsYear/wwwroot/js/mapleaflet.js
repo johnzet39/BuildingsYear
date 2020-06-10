@@ -57,8 +57,8 @@ function defaultMapClick(e) {
                 var string_klgd_source = json_object.klgd_source;
                 if (string_klgd_source.length > 0 && string_klgd_descr.length > 0) {
                     document.getElementById("info-source").innerHTML = string_klgd_source;
-                    //document.getElementById("info-klgd-img").setAttribute('src', string_klgd_img_url);
-                    document.getElementById("info-klgd-img").setAttribute('src', "c3fb3b9ed7a7c9f117513a82c9b45bb4.jpg");
+                    document.getElementById("info-klgd-img").setAttribute('src', string_klgd_img_url);
+                    //document.getElementById("info-klgd-img").setAttribute('src', "c3fb3b9ed7a7c9f117513a82c9b45bb4.jpg");
                     document.getElementById("info-klgd-descr").innerHTML = string_klgd_descr;
                     $("#building-description").removeClass('hidden');
                 }
