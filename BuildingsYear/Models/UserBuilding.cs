@@ -31,5 +31,8 @@ namespace BuildingsYear.Models
         [Display(Name = "Email для возможности обратной связи")]
         [EmailAddress(ErrorMessage = "Некорректный Email-адрес")]
         public string UserMail { get; set; }
+
+        public DateTime DateInsert { get; set; }
+        public string IpAddressUser { get; set; }
     }
 }

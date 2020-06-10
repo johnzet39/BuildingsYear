@@ -57,7 +57,9 @@ namespace BuildingsYear.Models
             feature.SetField("YearNew", (int)userBuilding.YearNew);
             feature.SetField("ReasonYear", userBuilding.ReasonYear);
             feature.SetField("Username", userBuilding.Username);
-            feature.SetField("UserMail", userBuilding.UserMail);
+            feature.SetField("DateInsert", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"));
+            feature.SetField("IpAddressUser", userBuilding.IpAddressUser);
+
             pglayer.CreateFeature(feature);
         }
 

@@ -43,27 +43,30 @@ namespace BuildingsYear.Controllers
         public IActionResult EditBuilding(UserBuilding userbuilding)
         {
 
-            var usersTable = _layersList.Value.FirstOrDefault(o => o.Name == "users_data");
-            if (usersTable != null)
+            if (ModelState.IsValid)
             {
-                using (GisAccess gis = new GisAccess(usersTable))
+                var usersTable = _layersList.Value.FirstOrDefault(o => o.Name == "users_data");
+                if (usersTable != null)
                 {
-                    int retry_cnt = 5;
-                    int cnt = retry_cnt;
-                    do
+                    using (GisAccess gis = new GisAccess(usersTable))
                     {
-                        --cnt;
-                        try
+                        int retry_cnt = 5;
+                        int cnt = retry_cnt;
+                        do
                         {
-                            gis.WriteUserData(userbuilding);
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogError($"Not write userdata {retry_cnt - cnt}/{retry_cnt}. {ex.Message}");
-                            Thread.Sleep(2);
-                        }
-                    } while (cnt > 0);
+                            --cnt;
+                            try
+                            {
+                                gis.WriteUserData(userbuilding);
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError($"Not write userdata {retry_cnt - cnt}/{retry_cnt}. {ex.Message}");
+                                Thread.Sleep(2);
+                            }
+                        } while (cnt > 0);
+                    }
                 }
             }
 
