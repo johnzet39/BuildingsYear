@@ -24,7 +24,7 @@ namespace BuildingsYear.Models
         [MaxLength(50)]
         public string ReasonYear { get; set; }
 
-        [Display(Name = "Имя пользователя")]
+        [Display(Name = "Ваше имя")]
         [MaxLength(50)]
         public string Username { get; set; }
 

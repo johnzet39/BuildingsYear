@@ -49,6 +49,18 @@ namespace BuildingsYear.Models
             pglayer = ds.GetLayerByName(jsonLayer.Name);
         }
 
+        public void WriteUserData(UserBuilding userBuilding)
+        {
+            FeatureDefn featDefn = pglayer.GetLayerDefn();
+            Feature feature = new Feature(featDefn);
+            feature.SetField("Keyid", userBuilding.Keyid);
+            feature.SetField("YearNew", (int)userBuilding.YearNew);
+            feature.SetField("ReasonYear", userBuilding.ReasonYear);
+            feature.SetField("Username", userBuilding.Username);
+            feature.SetField("UserMail", userBuilding.UserMail);
+            pglayer.CreateFeature(feature);
+        }
+
         public string GetObjectByCoordinates(double x, double y)
         {
             //x = Normalize(x);

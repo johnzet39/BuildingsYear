@@ -13,11 +13,6 @@
     {
       "library": "proj4leaflet@1.0.2",
       "destination": "wwwroot/lib/proj4leaflet/"
-    },
-    {
-      "provider": "jsdelivr",
-      "library": "@turf/buffer@5.1.5",
-      "destination": "wwwroot/lib/@turf/buffer/"
     }
   ]
 }
