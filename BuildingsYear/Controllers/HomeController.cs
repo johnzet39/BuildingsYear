@@ -10,6 +10,8 @@ using BuildingsYear.Models.JSONModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Threading;
+using BuildingsYear.Infrastructure;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildingsYear.Controllers
 {
@@ -36,7 +38,13 @@ namespace BuildingsYear.Controllers
         [HttpGet]
         public IActionResult EditBuilding(int keyid)
         {
-            return PartialView("EditBuildingModal", new UserBuilding { Keyid = keyid} );
+            if (EditesChecker.IsMaxEditesPerDay())
+                return PartialView("EditBuildingModal", new UserBuilding { Keyid = keyid} );
+            else {
+                _logger.LogWarning($"Превышен лимит правок в день. ({HttpContext.Connection.RemoteIpAddress.ToString()})");
+                return StatusCode(StatusCodes.Status405MethodNotAllowed, "Превышен лимит правок в день.");
+            }
+            
         }
 
         [HttpPost]
@@ -51,6 +59,8 @@ namespace BuildingsYear.Controllers
                 {
                     using (GisAccess gis = new GisAccess(usersTable))
                     {
+                        //if (gis.IsMaxEditesPerDay())
+                        //{
                         int retry_cnt = 5;
                         int cnt = retry_cnt;
                         do
@@ -59,6 +69,7 @@ namespace BuildingsYear.Controllers
                             try
                             {
                                 gis.WriteUserData(userbuilding);
+                                EditesChecker.AddEditsCnt();
                                 break;
                             }
                             catch (Exception ex)
@@ -67,6 +78,7 @@ namespace BuildingsYear.Controllers
                                 Thread.Sleep(2);
                             }
                         } while (cnt > 0);
+                        //}
                     }
                 }
             }

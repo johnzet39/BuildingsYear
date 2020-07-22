@@ -4,7 +4,7 @@
 //var pc_browser = !L.Browser.mobile;
 //console.log(pc_browser);
 
-var map = L.map('map_l', { attributionControl: false, maxZoom: 17, minZoom: 10, zoomControl: false, dragging: true, tap: true }).setView([54.71, 20.51], 12);
+var map = L.map('map_l', { attributionControl: false, maxZoom: 17, minZoom: 12, zoomControl: false, dragging: true, tap: true }).setView([54.71, 20.51], 12);
 L.control.zoom({position: 'bottomleft'}).addTo(map);
 L.DomUtil.addClass(map._container, 'crosshair-cursor-enabled');
 //var osm = new L.TileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
@@ -17,6 +17,8 @@ var selectedStyle = {
     "opacity": 0.9
 };
 
+
+
 var groupSelectedPolygon = new L.featureGroup().addTo(map);
 var selectedPolygon = L.geoJSON(null, { style: selectedStyle }).addTo(groupSelectedPolygon);
 var current_keyid_building = null; //for edit
@@ -27,6 +29,14 @@ function setDefaultMapClickEvent() {
     map.on('click', defaultMapClick);
 };
 
+//Info panel elements
+var element_info_year = document.getElementById("info-year");
+var element_info_address = document.getElementById("info-address");
+var element_info_source = document.getElementById("info-source");
+var element_info_klgd_img = document.getElementById("info-klgd-img");
+var element_info_klgd_descr = document.getElementById("info-klgd-descr");
+
+
 function defaultMapClick(e) {
     url = 'api/map/getinfo/' + e.latlng.lng + '/' + e.latlng.lat;
     $.get(url).done(function (data) {
@@ -36,7 +46,10 @@ function defaultMapClick(e) {
         else {
             selectedPolygon.clearLayers();
             if (data.featureInfo != null) {
+                selectFeature(JSON.parse(data.featureInfo).geom);
+
                 var json_object = JSON.parse(data.featureInfo);
+                
                 current_keyid_building = json_object.keyid;
 
                 var string_year = json_object.year.replace('1945', 'до 1945');
@@ -48,24 +61,25 @@ function defaultMapClick(e) {
                 if (string_address.length < 1) {
                     string_address = ' - ';
                 }
-                document.getElementById("info-year").innerHTML = string_year;
-                document.getElementById("info-address").innerHTML = string_address;
-                $("#info-panel").removeClass('info-hidden');
+                element_info_year.innerHTML = string_year;
+                element_info_address.innerHTML = string_address;
+                
 
                 var string_klgd_img_url = json_object.klgd_img_url;
                 var string_klgd_descr = json_object.klgd_descr;
                 var string_klgd_source = json_object.klgd_source;
                 if (string_klgd_source.length > 0 && string_klgd_descr.length > 0) {
-                    document.getElementById("info-source").innerHTML = string_klgd_source;
-                    document.getElementById("info-klgd-img").setAttribute('src', string_klgd_img_url);
+                    element_info_source.innerHTML = string_klgd_source;
+                    element_info_klgd_img.setAttribute('src', string_klgd_img_url);
                     //document.getElementById("info-klgd-img").setAttribute('src', "c3fb3b9ed7a7c9f117513a82c9b45bb4.jpg");
-                    document.getElementById("info-klgd-descr").innerHTML = string_klgd_descr;
+                    element_info_klgd_descr.innerHTML = string_klgd_descr;
                     $("#building-description").removeClass('hidden');
                 }
                 else {
                     $("#building-description").addClass('hidden');
                 }
-                selectFeature(JSON.parse(data.featureInfo).geom);
+                $("#info-panel").removeClass('info-hidden');
+                
             }
         }
     });
@@ -82,6 +96,12 @@ function closeInfoPanel() {
     $("#info-panel").addClass('info-hidden');
     selectedPolygon.clearLayers();
     current_keyid_building = null;
+
+    element_info_year.innerHTML = '';
+    element_info_address.innerHTML = '';
+    element_info_source.innerHTML = '';
+    element_info_klgd_img.removeAttribute('src');
+    element_info_klgd_descr.innerHTML = ''; 
 }
 
 
@@ -98,6 +118,9 @@ $('button[data-toggle="ajax-edit-modal"]').click(function (e) {
     $.get(url, { keyid: current_keyid_building }).done(function (data) {
         $('#modal-placeholder').html(data);
         $('#modal-placeholder > .modal').modal('show');
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        //alert("Custom error : " + jqXHR.responseText + " Status: " + textStatus + " Http error:" + errorThrown);
+        alert(jqXHR.responseText);
     });
 });
 /************************

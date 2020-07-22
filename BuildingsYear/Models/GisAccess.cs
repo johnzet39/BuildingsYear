@@ -64,6 +64,17 @@ namespace BuildingsYear.Models
             pglayer.CreateFeature(feature);
         }
 
+        //public bool IsMaxEditesPerDay()
+        //{
+        //    pglayer.SetAttributeFilter($"DateInsert >= '{DateTime.Now:yyyy-MM-dd}'");
+        //    if (pglayer.GetFeatureCount(0) < 5)
+        //    {
+        //        pglayer.SetAttributeFilter("");
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
         public string GetObjectByCoordinates(double x, double y)
         {
             //x = Normalize(x);

@@ -11,7 +11,6 @@ namespace BuildingsYear.Models
         [Required]
         [Display(Name = "Уникальный идентификатор")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
-        
         public int Keyid { get; set; }
 
         [Required(ErrorMessage = "Не указан год постройки")]

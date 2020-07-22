@@ -160,7 +160,7 @@ info-panel
     position: absolute;
     right: 10px;
     top: 20px;
-    z-index: 9999;
+    z-index: 1000;
     opacity: 1;
     padding: 10px;
     background: transparent;
@@ -313,7 +313,7 @@ info-panel
         right: 20px;
         bottom: 20px;
         background: transparent;
-        z-index: 9999;
+        z-index: 1040;
         opacity: 0.9;
     }
 
