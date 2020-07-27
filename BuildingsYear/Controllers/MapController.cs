@@ -25,14 +25,35 @@ namespace BuildingsYear.Controllers
             _layersList = layersList;
         }
 
+        /// <summary>
+        /// SYNC getting tile
+        /// </summary>
+        //[HttpGet("{z}/{x}/{y}.png")]
+        //public IActionResult Get(int x, int y, int z)
+        //{
+        //    var xyz_y = (int)Math.Pow(2, z) - y - 1;
+        //    byte[] imageData = _tileReader.GetImageData(x, xyz_y, z);
+        //    if (imageData is null)
+        //        return null;
+        //    return File(imageData, "image/png");
+        //}
+
+
+        /// <summary>
+        /// ASYNC getting tile
+        /// </summary>
         [HttpGet("{z}/{x}/{y}.png")]
-        public IActionResult Get(int x, int y, int z)
+        public async Task<IActionResult> Get(int x, int y, int z)
         {
-            var xyz_y = (int)Math.Pow(2, z) - y - 1;
-            byte[] imageData = _tileReader.GetImageData(x, xyz_y, z);
-            if (imageData is null)
-                return null;
-            return File(imageData, "image/png");
+            return File(await Task.Run(() =>
+            {
+                var xyz_y = (int)Math.Pow(2, z) - y - 1;
+                byte[] imageData = _tileReader.GetImageData(x, xyz_y, z);
+                if (imageData is null)
+                    return null;
+                return imageData;
+
+            }), "image/png");
         }
 
         [HttpGet("getinfo/{x}/{y}")]
